@@ -14,7 +14,7 @@ Base = automap_base()
 # reflect the tables
 Base.prepare(autoload_with=engine)
 # Save reference to the table
-Emission = Base.classes.total_emission
+accident = Base.classes.total_accident
 #################
 
 # Flask Setup

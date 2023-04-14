@@ -25,7 +25,7 @@ app = Flask(__name__)
 def welcome():
     """List all available api routes."""
     return (
-        f"/api/v1.0/emissions<br>"
+        f"/api/v1.0/accidents<br>"
     )
     
 ##############

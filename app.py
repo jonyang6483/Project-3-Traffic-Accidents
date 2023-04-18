@@ -26,14 +26,14 @@ app = Flask(__name__)
 def welcome():
     print("Server received request for 'Home' page...")
     return (
-        f"Welcome to the Home Page!<br/>"
+        f"Welcome to the Project 3 Home Page!<br/>"
         f"<br/>"
-        f"Available Routes:<br/>"
+        f"Please use the following routes:<br/>"
         f"<br/>"
-        f"/api/v1.0/region<br>"
-        f"/api/v1.0/time<br>"
-        f"/api/v1.0/make<br>"
-        f"/api/v1.0/damage<br>"
+        f"/api/v1.0/region/(Region)<br>"
+        f"/api/v1.0/time/(Time)<br>"
+        f"/api/v1.0/make/(Make)<br>"
+        f"/api/v1.0/severity/(Region)<br>"
 
     )
     
@@ -80,8 +80,7 @@ def time(Time):
     results = session.query(accident.region,accident.hour).filter(accident.hour.in_(time_dict[Time])).all()
 
     """Return a list of passenger data including the name, age, and sex of each passenger"""
-    # Query all passengers
-    #results = session.query(accident.region, accident.hour, accident.veh_num).filter(accident.hour==Time).all()
+   
 
     session.close()
 
@@ -91,22 +90,58 @@ def time(Time):
         crash_dict = {}
         crash_dict["region"] = region
         crash_dict["hour"] = hour
-        #crash_dict["veh_num"] = veh_num
         crashes.append(crash_dict)
 
     return jsonify(crashes)
 
-@app.route("/api/v1.0/make")
-def make():
-    print("Make page")
-    return "What make has the most accidents?"
+@app.route("/api/v1.0/make/<Make>")
+def make(Make):
+    print("Make")
+    
+    
+    # Create our session (link) from Python to the DB
+    session = Session(engine)
 
+    """Return a list of passenger data including the name, age, and sex of each passenger"""
+    # Query all passengers
+    results = session.query(accident.make, accident.passenger_inj, accident.veh_damage).filter(accident.make==Make).all()
 
-@app.route("/api/v1.0/damage")
-def damage():
-    print("Damage page")
-    return "Where are the most severe accidents?"
+    session.close()
 
+    # Create a dictionary from the row data and append to a list of all_passengers
+    crash_make = []
+    for make, inj, damage in results:
+        mcrash_dict = {}
+        mcrash_dict["make"] = make
+        mcrash_dict["passenger_inj"] = inj
+        mcrash_dict["veh_damage"] = damage
+        crash_make.append(mcrash_dict)
+
+    return jsonify(crash_make)
+
+@app.route("/api/v1.0/severity/<Region>")
+def damage(Region):
+    print("Severity")
+    
+# Create our session (link) from Python to the DB
+    session = Session(engine)
+
+    """Return a list of passenger data including the name, age, and sex of each passenger"""
+    # Query all passengers
+    results = session.query(accident.region, accident.num_injured, accident.veh_damage).filter(accident.region==Region).all()
+
+    session.close()
+
+    # Create a dictionary from the row data and append to a list of all_passengers
+    crash_sev = []
+    for region, numInj, damage in results:
+        mcrash_dict = {}
+        mcrash_dict["region"] = region
+        mcrash_dict["num_injured"] = numInj
+        mcrash_dict["veh_damage"] = damage
+        crash_sev.append(mcrash_dict)
+
+    return jsonify(crash_sev)
 
 
 if __name__ == '__main__':

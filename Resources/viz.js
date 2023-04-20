@@ -93,7 +93,9 @@ function barChanged(passenger_vehicle) {
         var inj_count=[];
         if (passenger_vehicle == "passenger_inj") {
             for (i=0; i < data.length; i++) {
-                if(data[i].passenger_inj != 'No Apparent Injury (O)'){
+                if (data[i].passenger_inj == 'No Apparent Injury (O)') {
+                    d3.select("#no_injury").text(data[i].count);
+                } else {
                     type.push(data[i].passenger_inj);
                     inj_count.push(data[i].count)
                 }
@@ -106,6 +108,7 @@ function barChanged(passenger_vehicle) {
                 inj_count.push(data[i].count)
         
             }
+            d3.select("#no_injury").text("No Data");
         }
 
         injuryChart.data.datasets[0].data = inj_count;
@@ -250,12 +253,17 @@ window.onload =async function getData() {
     console.log('data3: ', data3);
     var type=[];
     var inj_count=[];
-    for (i=0; i < 7; i++) {
-        if(data3[i].passenger_inj != 'No Apparent Injury (O)'){
+    var no_inj = []
+    for (i=0; i < data3.length; i++) {
+        if (data3[i].passenger_inj == 'No Apparent Injury (O)') {
+            d3.select("#no_injury").text(data3[i].count);
+        } else {
             type.push(data3[i].passenger_inj);
             inj_count.push(data3[i].count)
         }
     }
+    // (data3[i].passenger_inj != 'No Apparent Injury (O)')
+    
     console.log("make: ",type)
     console.log("count: ", inj_count)
 

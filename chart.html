@@ -77,7 +77,7 @@
     </div>
     <div class="chartCard">
       <div class="chartBox">
-        <img src="Resources/us_region.png" alt="US region division map" class="image"></img>
+        <img src="Resources/Region_Map.png" alt="US region division map" class="image"></img>
         
       </div>
       <div class="dropdown" style="text-align: center">
@@ -119,14 +119,20 @@
     </div>
     <div class="chartCard" style="background: rgba(54, 162, 235, 0.4)">
       <canvas id="injuries" class="chartBox"></canvas>
-      <div class="dropdown" style="text-align:center">
-        <p>This shows the count</p>
-        <p>of either passenger injury</p>
-        <p>or vehicle damage for the</p>
-        <p>region selected</p>
-        <button onclick="barChanged('passenger_inj')">Passenger Injury</button>
-        <p></p>
-        <button onclick="barChanged('veh_damage')">Vehicle Damage</button>
+      <div>
+        <div class="dropdown" style="text-align:center">
+          <p>This shows the count</p>
+          <p>of either passenger injury</p>
+          <p>or vehicle damage for the</p>
+          <p>region selected</p>
+          <button onclick="barChanged('passenger_inj')">Passenger Injury</button>
+          <p></p>
+          <button onclick="barChanged('veh_damage')">Vehicle Damage</button>
+        </div>
+        <div class="dropdown" style="text-align: center">
+          <p>Accidents with no injuries:</p>
+          <p id="no_injury"></p>
+        </div>
       </div>      
     </div>
     <script src="https://d3js.org/d3.v5.min.js"></script>

@@ -51,7 +51,7 @@ def welcome():
         f"          - Afternoon<br/>"
         f"          - Night<br/>"
         f"<br/>"
-        f"/api/v1.0/make/(Make)/(Region)<br>"
+        f"/api/v1.0/make/(Region)<br>"
         f"     * Choose a Region and replace '(Region)'<br/>"
         f"<br/>"
         f"/api/v1.0/severity/(Region)/(Variable)<br/>"
@@ -62,10 +62,8 @@ def welcome():
         f"          - North East<br/>"
         f"   * Choose one of the two to replace '(Variable)'<br/>"
         f" - passenger_inj<br/>"
-        f" - veh_damate<br/>"
+        f" - veh_damage<br/>"
         f"<br/>"
-        f"/api/v1.0/all-accidents<br/>"
-        f"*Full Data"
     )
     
 ##############
@@ -217,31 +215,6 @@ def damage(Region,Variable):
 
             return jsonify(crash_sev)
 
-    # Create a dictionary from the row data and append to a list of all_passengers
-
-@app.route("/api/v1.0/all-accidents")
-def full_dataset():
-    
-# Create our session (link) from Python to the DB
-    session = Session(engine)
-
-    # Query all passengers
-    results = session.query(accident).all()
-
-    session.close()
-
-    # Create a dictionary from the row data and append to a list of all_passengers
-    crash_sev = []
-    for region, numInj, damage in results:
-        mcrash_dict = {}
-        mcrash_dict["region"] = region
-        mcrash_dict["hour"] = hour
-        mcrash_dict["passenger_inj"] = inj
-        mcrash_dict["num_injured"] = numInj
-        mcrash_dict["veh_damage"] = damage
-        crash_sev.append(mcrash_dict)
-
-    return jsonify(crash_sev)
 
 if __name__ == '__main__':
     app.run(debug=True)

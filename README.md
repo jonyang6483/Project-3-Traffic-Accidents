@@ -1,4 +1,4 @@
-# Project-3-Traffic-Accidents
+# Project 3: Traffic-Accidents
 
 ![image](https://user-images.githubusercontent.com/117343047/233496958-7bfbc127-cf88-4168-9da3-07a54ed695d0.png)
 

@@ -9,6 +9,7 @@ time_dict = {
 
 var timeChart;
 var dunChart;
+var injuryChart;
 var time = "Early Morning"
 
 function timeChanged(time) {
@@ -51,6 +52,7 @@ function regionChanged(region) {
     var time = document.getElementById("dayTime").value;
     timeChanged(time);
     doughnutChanged(region);
+    barChanged("passenger_inj");
 }
 
 function doughnutChanged(region) {
@@ -76,6 +78,42 @@ function doughnutChanged(region) {
         dunChart.update();
     }
 }
+// --------------------------------------------------------------
+
+function barChanged(passenger_vehicle) {
+    var region = document.getElementById("region").value;
+    url = 'http://localhost:5000/api/v1.0/severity/' + region + "/" + passenger_vehicle;
+    barUpdate();
+    async function barUpdate() {
+        const response = await fetch(url)
+        const data = await response.json();
+        console.log('data2: ', data)
+
+        var type=[];
+        var inj_count=[];
+        if (passenger_vehicle == "passenger_inj") {
+            for (i=0; i < data.length; i++) {
+                if(data[i].passenger_inj != 'No Apparent Injury (O)'){
+                    type.push(data[i].passenger_inj);
+                    inj_count.push(data[i].count)
+                }
+            }
+        
+        } else {
+            for (i=0; i < data.length; i++) {
+            
+                type.push(data[i].veh_damage);
+                inj_count.push(data[i].count)
+        
+            }
+        }
+
+        injuryChart.data.datasets[0].data = inj_count;
+        injuryChart.data.labels = type;
+        injuryChart.update();
+    }
+};
+
 // --------------------------------------------------------------
 
 url = 'http://localhost:5000/api/v1.0/time/All/' + time;
@@ -109,7 +147,7 @@ window.onload =async function getData() {
     timeChart = new Chart(
         document.getElementById('timeChart'),
         {
-            type: 'bar',
+            type: 'radar',
             data: {
             labels: labels,
             datasets: [
@@ -121,7 +159,14 @@ window.onload =async function getData() {
                                     "#e8c3b9",
                                     "#CD5C5C", 
                                     "#40E0D0",],
-                data: values
+                data: values,
+                fill: true,
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgb(255, 99, 132)',
+                pointBackgroundColor: 'rgb(255, 99, 132)',
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: 'rgb(255, 99, 132)'
                 }
             ]
             },
@@ -169,30 +214,93 @@ window.onload =async function getData() {
                                     "#340505"],
                     hoverOffset: 7
                 }]
-        },
-        tooltips: {
-            callbacks: {
+            },
+            tooltips: {
                 callbacks: {
-                    label: function(tooltipItem, data) {
-                    var dataset = data.datasets[tooltipItem.datasetIndex];
-                    var total = dataset.data.reduce(function(previousValue, currentValue, currentIndex, array) {
-                        return previousValue + currentValue;
-                    });
-                    var currentValue = dataset.data[tooltipItem.index];
-                    var precentage = Math.floor(((currentValue/total) * 100)+0.5);
-                    return precentage + "%";
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                        var dataset = data.datasets[tooltipItem.datasetIndex];
+                        var total = dataset.data.reduce(function(previousValue, currentValue, currentIndex, array) {
+                            return previousValue + currentValue;
+                        });
+                        var currentValue = dataset.data[tooltipItem.index];
+                        var precentage = Math.floor(((currentValue/total) * 100)+0.5);
+                        return precentage + "%";
+                        }   
+                    }
+                }
+            },
+
+            options: {
+                legend: {
+                position: 'bottom',},
+                title: {
+                    display: true,
+                    text: 'Number of Vehicles in Accident (South)'
+                }
             }
-            }
-        } },
-        options: {
-            legend: {
-            position: 'bottom',},
-            title: {
-                display: true,
-                text: 'Number of Vehicles in Accident (South)'
         }
-        }}
-    )
+    );
+
+    // ------------------------------------------------
+
+    var vehicle_damage = ['Disabling Damage',
+                            'Functional Damage',
+                            'Minor Damage',
+                            'Not Reported',
+                            'Reported as Unknown',
+                            'No Damage']
+
+    var passenger_injuries = ['No Apparent Injury (O)',
+                                'Possible Injury (C)',
+                                'Suspected Minor Injury (B)',
+                                'Suspected Serious Injury (A)',
+                                'Fatal Injury (K)',
+                                'Died Prior to Crash*',
+                                'No person involved',
+                                'Injured, Severity Unknown']
+    
+    url = 'http://localhost:5000/api/v1.0/severity/All/passenger_inj'
+    const response3 = await fetch(url);
+    const data3 = await response3.json();
+    console.log('data3: ', data3);
+    var type=[];
+    var inj_count=[];
+    for (i=0; i < 7; i++) {
+        if(data3[i].passenger_inj != 'No Apparent Injury (O)'){
+            type.push(data3[i].passenger_inj);
+            inj_count.push(data3[i].count)
+        }
+    }
+    console.log("make: ",type)
+    console.log("count: ", inj_count)
+
+    injuryChart = new Chart(
+        document.getElementById("injuries"),
+        {
+            type: 'bar',
+            data: {
+                labels: type,
+                datasets: [{
+                    label: 'Number of Occurance by Severity',
+                    data: inj_count,
+                    backgroundColor: ["#3e95cd",
+                                    "#8e5ea2", 
+                                    "#3cba9f", 
+                                    "#e8c3b9",
+                                    "#CD5C5C", 
+                                    "#40E0D0",],
+                }]
+            },
+            options: {
+                elements: {
+                    line: {
+                        borderWidth: 3
+                    }
+    
+                }
+            }
+        }
+    );
+
 };
-
-

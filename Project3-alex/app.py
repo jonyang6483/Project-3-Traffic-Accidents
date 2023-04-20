@@ -39,22 +39,30 @@ def welcome():
         f"          - Mid West<br/>"
         f"          - North East<br/>"
         f"<br/>"
-        f"/api/v1.0/time/(Time)<br>"
+        f"/api/v1.0/time/(Region)/(Time)<br>"
+        f"   * Choose one of the 4 Regions and replace '(Region)'<br/>"
+        f"          - South<br/>"
+        f"          - West<br/>"
+        f"          - Mid West<br/>"
+        f"          - North East<br/>"
         f"   * Choose one of the 4 Time of day and replace '(Time)'<br/>"
         f"          - Early Morning<br/>"
         f"          - Morning<br/>"
         f"          - Afternoon<br/>"
         f"          - Night<br/>"
         f"<br/>"
-        f"/api/v1.0/make/(Make)<br>"
-        f"     * Choose a car Make and replace '(Make)'<br/>"
+        f"/api/v1.0/make/(Make)/(Region)<br>"
+        f"     * Choose a Region and replace '(Region)'<br/>"
         f"<br/>"
-        f"/api/v1.0/severity/(Region)<br/>"
+        f"/api/v1.0/severity/(Region)/(Variable)<br/>"
         f"   * Choose one of the 4 Regions and replace '(Region)'<br/>"
         f"          - South<br/>"
         f"          - West<br/>"
         f"          - Mid West<br/>"
         f"          - North East<br/>"
+        f"   * Choose one of the two to replace '(Variable)'<br/>"
+        f" - passenger_inj<br/>"
+        f" - veh_damate<br/>"
         f"<br/>"
         f"/api/v1.0/all-accidents<br/>"
         f"*Full Data"
@@ -68,8 +76,6 @@ def region(Region):
     # Create our session (link) from Python to the DB
     session = Session(engine)
 
-    """Return a list of passenger data including the name, age, and sex of each passenger"""
-    # Query all passengers
     results = session.query(accident.region, accident.passenger_inj, accident.veh_damage, accident.veh_num).filter(accident.region==Region).all()
 
     session.close()
@@ -148,29 +154,70 @@ def make(Region):
 
     return jsonify(crash_make)
 
-@app.route("/api/v1.0/severity/<Region>")
-def damage(Region):
+@app.route("/api/v1.0/severity/<Region>/<Variable>")
+def damage(Region,Variable):
     print("Severity")
     
 # Create our session (link) from Python to the DB
     session = Session(engine)
 
-    """Return a list of passenger data including the name, age, and sex of each passenger"""
-    # Query all passengers
-    results = session.query(accident.region, accident.num_injured, accident.veh_damage).filter(accident.region==Region).all()
+    if (Variable == "passenger_inj"):
+        if (Region == "All"):
+            results = session.query(accident.passenger_inj, func.count(accident.veh_damage)).group_by(accident.passenger_inj).all()
+            session.close()
 
-    session.close()
+            crash_sev = []
+            for passenger_inj, count in results:
+                mcrash_dict = {}
+                mcrash_dict["passenger_inj"] = passenger_inj
+                mcrash_dict["count"] = count
+                crash_sev.append(mcrash_dict)
+
+            return jsonify(crash_sev)
+        else:
+            results = session.query(accident.passenger_inj, func.count(accident.veh_damage)
+                                    ).filter(accident.region==Region
+                                            ).group_by(accident.passenger_inj).all()
+            session.close()
+
+            crash_sev = []
+            for passenger_inj, count in results:
+                mcrash_dict = {}
+                mcrash_dict["passenger_inj"] = passenger_inj
+                mcrash_dict["count"] = count
+                crash_sev.append(mcrash_dict)
+
+            return jsonify(crash_sev)
+    else:
+        if (Region == "All"):
+            results = session.query(func.count(accident.passenger_inj), accident.veh_damage
+                                    ).group_by(accident.veh_damage).all()
+            session.close()
+
+            crash_sev = []
+            for count, damage in results:
+                mcrash_dict = {}
+                mcrash_dict["count"] = count
+                mcrash_dict["veh_damage"] = damage
+                crash_sev.append(mcrash_dict)
+
+            return jsonify(crash_sev)
+        else:
+            results = session.query(func.count(accident.passenger_inj), accident.veh_damage
+                                    ).filter(accident.region==Region
+                                            ).group_by(accident.veh_damage).all()
+            session.close()
+
+            crash_sev = []
+            for count, damage in results:
+                mcrash_dict = {}
+                mcrash_dict["count"] = count
+                mcrash_dict["veh_damage"] = damage
+                crash_sev.append(mcrash_dict)
+
+            return jsonify(crash_sev)
 
     # Create a dictionary from the row data and append to a list of all_passengers
-    crash_sev = []
-    for region, numInj, damage in results:
-        mcrash_dict = {}
-        mcrash_dict["region"] = region
-        mcrash_dict["num_injured"] = numInj
-        mcrash_dict["veh_damage"] = damage
-        crash_sev.append(mcrash_dict)
-
-    return jsonify(crash_sev)
 
 @app.route("/api/v1.0/all-accidents")
 def full_dataset():

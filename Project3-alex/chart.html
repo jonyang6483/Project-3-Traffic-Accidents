@@ -58,6 +58,13 @@
       border-radius: 20px;
       background:rgba(4, 14, 21, 0.4);
     }
+
+    .image {
+      width: 700px;
+      height: 500px;
+      align-items: center;
+      justify-content: center;
+    }
     
     </style>
     <style rel="stylesheet" src="viz.css"></style>
@@ -70,8 +77,8 @@
     </div>
     <div class="chartCard">
       <div class="chartBox">
-        <canvas id="myChart"></canvas>
-        <button onclick="updateChart()">FetchNow</button>
+        <img src="Resources/us_region.png" alt="US region division map" class="image"></img>
+        
       </div>
       <div class="dropdown" style="text-align: center">
         <p>Which Region Do You Want To Look At?</p>
@@ -88,6 +95,10 @@
     <div class="chartCard" style="background: rgba(54, 162, 235, 0.4)">
       <div class="dropdown" style="text-align:center">
         <p>Time Of The Day</p>
+        <p>Choose what period of the</p>
+        <p>day you would like to</p>
+        <p>see the most dangerous hour.</p>
+        <p>Based on the Region selected</p>
         <select id="dayTime" onchange="timeChanged(this.value)">
           <option value="Early Morning">Early Morning</option>
           <option value="Morning">Morning</option>
@@ -103,6 +114,19 @@
         <p>This shows the Top 7</p>
         <p>Makes that were involed</p>
         <p>accidents in 2019.</p>
+        <p>Based on the Region selected</p>
+      </div>      
+    </div>
+    <div class="chartCard" style="background: rgba(54, 162, 235, 0.4)">
+      <canvas id="injuries" class="chartBox"></canvas>
+      <div class="dropdown" style="text-align:center">
+        <p>This shows the count</p>
+        <p>of either passenger injury</p>
+        <p>or vehicle damage for the</p>
+        <p>region selected</p>
+        <button onclick="barChanged('passenger_inj')">Passenger Injury</button>
+        <p></p>
+        <button onclick="barChanged('veh_damage')">Vehicle Damage</button>
       </div>      
     </div>
     <script src="https://d3js.org/d3.v5.min.js"></script>

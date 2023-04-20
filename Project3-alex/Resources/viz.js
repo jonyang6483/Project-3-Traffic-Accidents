@@ -243,22 +243,6 @@ window.onload =async function getData() {
     );
 
     // ------------------------------------------------
-
-    var vehicle_damage = ['Disabling Damage',
-                            'Functional Damage',
-                            'Minor Damage',
-                            'Not Reported',
-                            'Reported as Unknown',
-                            'No Damage']
-
-    var passenger_injuries = ['No Apparent Injury (O)',
-                                'Possible Injury (C)',
-                                'Suspected Minor Injury (B)',
-                                'Suspected Serious Injury (A)',
-                                'Fatal Injury (K)',
-                                'Died Prior to Crash*',
-                                'No person involved',
-                                'Injured, Severity Unknown']
     
     url = 'http://localhost:5000/api/v1.0/severity/All/passenger_inj'
     const response3 = await fetch(url);

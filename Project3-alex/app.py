@@ -11,7 +11,7 @@ from flask import Flask, jsonify
 app = Flask(__name__)
 CORS(app)
 #Database total accidents Setup
-engine = create_engine("sqlite:///accidents2.sqlite")
+engine = create_engine("sqlite:///accidents.sqlite")
 
 Base = automap_base()
 

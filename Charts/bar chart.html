@@ -17,7 +17,20 @@
   
     <canvas id="bar-chart" width="800" height="500">
     </canvas>
-    <script>
+
+    <script src="South veh_dam.js">
+
+    </script>
+
+    <canvas id="bar-chart" width="800" height="500">
+    </canvas>
+
+    <script src="West veh_dam.js">
+
+    </script>
+
+
+    <!-- <script>
   
         getData();
   
@@ -30,11 +43,13 @@
             length = data.length;
             console.log(length);
 
-            labels = data.region;
+            const damaged = {}
+            labels = [];
             values = [];
             for (i = 0; i < length; i++) {
-                //labels.push(data.region);
-                values.push(data[i].veh_damage);
+                labels.push(data[i].veh_damage);
+                values.push(data[i].num_injured);
+                
             };
   
   
@@ -64,7 +79,7 @@
   
         }
   
-    </script>
+    </script> -->
 </body>
   
 </html>

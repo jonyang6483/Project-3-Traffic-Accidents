@@ -1,8 +1,3 @@
-var url = "http://localhost:5000/api/v1.0/region/South"
-d3.json(url).then(function(data) {
-    console.log("data: ",data)
-});
-
 time_dict = {
     "Morning": ["6:00am-6:59am","7:00am-7:59am","8:00am-8:59am","9:00am-9:59am","10:00am-10:59am", "11:00am-11:59am"],
     "Afternoon": ["12:00pm-12:59pm", "1:00pm-1:59pm", "2:00pm-2:59pm", "3:00pm-3:59pm", "4:00pm-4:59pm", "5:00pm-5:59pm" ],
@@ -11,12 +6,14 @@ time_dict = {
     }
 
 // ----------------------------------------------------
+
 var timeChart;
 var dunChart;
-var time = "Morning"
+var time = "Early Morning"
 
 function timeChanged(time) {
-    var url = 'http://localhost:5000/api/v1.0/time/' + time;
+    var region = document.getElementById("region").value;
+    var url = 'http://localhost:5000/api/v1.0/time/' + region + "/" + time;
     updateTime(time);
     async function updateTime(time) {
         const response = await fetch(url)
@@ -41,7 +38,7 @@ function timeChanged(time) {
                 values[5] += 1
             }
         }
-        console.log("labels: ",labels);
+        console.log("labels: ",url);
         timeChart.data.datasets[0].data = values;
         timeChart.data.labels = labels;
         timeChart.update();
@@ -50,7 +47,38 @@ function timeChanged(time) {
 
 // --------------------------------------------------------------
 
-url = 'http://localhost:5000/api/v1.0/time/' + time;
+function regionChanged(region) {
+    var time = document.getElementById("dayTime").value;
+    timeChanged(time);
+    doughnutChanged(region);
+}
+
+function doughnutChanged(region) {
+
+    url = 'http://localhost:5000/api/v1.0/make/' + region;
+    doughnutUpdate();
+    async function doughnutUpdate() {
+        const response2 = await fetch(url)
+        const data2 = await response2.json();
+        console.log('data2: ', data2)
+
+        var make=[];
+        var count=[];
+        for (i=0; i < 7; i++) {
+            make.push(data2[i].make);
+            count.push(data2[i].acc_count)
+        }
+        console.log("make: ",make)
+        console.log("count: ", count)
+
+        dunChart.data.datasets[0].data = count;
+        dunChart.data.labels = make;
+        dunChart.update();
+    }
+}
+// --------------------------------------------------------------
+
+url = 'http://localhost:5000/api/v1.0/time/All/' + time;
 // getData();
 window.onload =async function getData() {
     const response = await fetch(url)
@@ -109,7 +137,7 @@ window.onload =async function getData() {
     
     // ------------------------------------------------
     
-    url = 'http://localhost:5000/api/v1.0/make/South'
+    url = 'http://localhost:5000/api/v1.0/make/All'
     const response2 = await fetch(url)
     const data2 = await response2.json();
     console.log('data2: ', data2)

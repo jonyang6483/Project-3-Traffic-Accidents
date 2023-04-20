@@ -29,7 +29,7 @@
     .chartCard {
       width: 100vw;
       height:80dvh;
-      background: rgba(54, 162, 235, 0.2);
+      background: rgb(186, 253, 205);
       margin:10px;
       display: flex;
       align-items: center;
@@ -75,12 +75,12 @@
       </div>
       <div class="dropdown" style="text-align: center">
         <p>Which Region Do You Want To Look At?</p>
-        <select>
-          <option>All</option>
-          <option>South</option>
-          <option>North East</option>
-          <option>West</option>
-          <option>Mid West</option>
+        <select id="region" onchange="regionChanged(this.value)">
+          <option value="All">All</option>
+          <option value="South">South</option>
+          <option value="North East">North East</option>
+          <option value="West">West</option>
+          <option value="Mid West">Mid West</option>
         </select>
         
       </div>
@@ -89,10 +89,10 @@
       <div class="dropdown" style="text-align:center">
         <p>Time Of The Day</p>
         <select id="dayTime" onchange="timeChanged(this.value)">
-          <option>Early Morning</option>
-          <option>Morning</option>
-          <option>Afternoon</option>
-          <option>Night</option>
+          <option value="Early Morning">Early Morning</option>
+          <option value="Morning">Morning</option>
+          <option value="Afternoon">Afternoon</option>
+          <option value="Night">Night</option>
         </select>
       </div>
       <canvas id="timeChart" class="chartBox"></canvas>

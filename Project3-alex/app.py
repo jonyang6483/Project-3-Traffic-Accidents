@@ -88,8 +88,8 @@ def region(Region):
 ##############
 
 
-@app.route("/api/v1.0/time/<Time>")
-def time(Time):
+@app.route("/api/v1.0/time/<Region>/<Time>")
+def time(Region,Time):
     print("Time page")
     #return "What time of the day is the most dangerous?"
 
@@ -103,7 +103,10 @@ def time(Time):
     "Early Morning": ["12:00am-12:59am","1:00am-1:59am","2:00am-2:59am","3:00am-3:59am","4:00am-4:59am","5:00am-5:59am"]
     }
     
-    results = session.query(accident.region,accident.hour).filter(accident.hour.in_(time_dict[Time])).all()
+    if (Region == "All"):
+        results = session.query(accident.region,accident.hour).filter(accident.hour.in_(time_dict[Time])).all()
+    else: 
+        results = session.query(accident.region,accident.hour).filter(accident.hour.in_(time_dict[Time])).filter(accident.region==Region).all()
 
     """Return a list of passenger data including the name, age, and sex of each passenger"""
    
@@ -128,9 +131,10 @@ def make(Region):
     # Create our session (link) from Python to the DB
     session = Session(engine)
 
-    """Return a list of passenger data including the name, age, and sex of each passenger"""
-    # Query all passengers
-    results = session.query(accident.make, func.count(accident.case_num)).filter(accident.region==Region).group_by(accident.make).order_by(func.count(accident.case_num).desc()).all()
+    if (Region == "All"):
+        results = session.query(accident.make, func.count(accident.case_num)).group_by(accident.make).order_by(func.count(accident.case_num).desc()).all()
+    else: 
+        results = session.query(accident.make, func.count(accident.case_num)).filter(accident.region==Region).group_by(accident.make).order_by(func.count(accident.case_num).desc()).all()
 
     session.close()
 
@@ -184,7 +188,7 @@ def full_dataset():
     for region, numInj, damage in results:
         mcrash_dict = {}
         mcrash_dict["region"] = region
-        crash_dict["hour"] = hour
+        mcrash_dict["hour"] = hour
         mcrash_dict["passenger_inj"] = inj
         mcrash_dict["num_injured"] = numInj
         mcrash_dict["veh_damage"] = damage

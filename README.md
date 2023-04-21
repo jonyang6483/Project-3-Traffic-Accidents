@@ -14,6 +14,8 @@ In this project, the objective was to determine trends in the dataset to discove
 * Jupyter notebook
 * Pandas 
 * Git Hub
+* HTML/CSS
+
 
 ## Data source
 * Kaggle (https://www.kaggle.com/datasets/jonbown/us-2020-traffic-accidents?resource=download&select=acc_19.csv)

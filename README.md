@@ -3,7 +3,7 @@
 ![image](https://user-images.githubusercontent.com/117343047/233496958-7bfbc127-cf88-4168-9da3-07a54ed695d0.png)
 
 ## Background
-In this project the objective was to determine trends in the dataset to discover which regions of the United States are more risky to drive and which time of the day should drivers be more alert.  
+In this project, the objective was to determine trends in the dataset to discover which regions of the United States are more risky to drive and the time of the day should drivers be more cautious.  
 
 
 ## Technologies Used
@@ -39,7 +39,7 @@ The most common severity in all four region was “Possible Injury”
 
 
 ## Limitations of the Dataset and Future Consideration
-Limitations with the dataset that was used had several limitations. The analyzed data was from 2019 and only looked at U.S. car accidents. The collected data did not investigate every detail regarding the accidents. Within the data that was collected there was missing data such as make and time of day. Not all accidents that happen in the U.S. are reported.   
+Limitations with the dataset that was used had several limitations. The analyzed data was from 2019 and only looked at U.S. car accidents. The collected data did not investigate every detail regarding the accidents. Within the data that was collected there was missing data such as make and time of day. Not all accidents that happen in the U.S. are reported. Finally, the population density across the regions is not evenly distributed.   
 
 
 

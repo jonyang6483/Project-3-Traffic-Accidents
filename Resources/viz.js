@@ -14,7 +14,7 @@ var time = "Early Morning"
 
 function timeChanged(time) {
     var region = document.getElementById("region").value;
-    var url = 'http://localhost:5000/api/v1.0/time/' + region + "/" + time;
+    var url = 'https://traffic-accidents-flask.onrender.com/api/v1.0/time/' + region + "/" + time;
     updateTime(time);
     async function updateTime(time) {
         const response = await fetch(url)
@@ -57,7 +57,7 @@ function regionChanged(region) {
 
 function doughnutChanged(region) {
 
-    url = 'http://localhost:5000/api/v1.0/make/' + region;
+    url = 'https://traffic-accidents-flask.onrender.com/api/v1.0/make/' + region;
     doughnutUpdate();
     async function doughnutUpdate() {
         const response2 = await fetch(url)
@@ -82,7 +82,7 @@ function doughnutChanged(region) {
 
 function barChanged(passenger_vehicle) {
     var region = document.getElementById("region").value;
-    url = 'http://localhost:5000/api/v1.0/severity/' + region + "/" + passenger_vehicle;
+    url = 'https://traffic-accidents-flask.onrender.com/api/v1.0/severity/' + region + "/" + passenger_vehicle;
     barUpdate();
     async function barUpdate() {
         const response = await fetch(url)
@@ -119,7 +119,7 @@ function barChanged(passenger_vehicle) {
 
 // --------------------------------------------------------------
 
-url = 'http://localhost:5000/api/v1.0/time/All/' + time;
+url = 'http://traffic-accidents-flask.onrender.com/api/v1.0/time/All/' + time;
 // getData();
 window.onload =async function getData() {
     const response = await fetch(url)
@@ -185,7 +185,7 @@ window.onload =async function getData() {
     
     // ------------------------------------------------
     
-    url = 'http://localhost:5000/api/v1.0/make/All'
+    url = 'http://traffic-accidents-flask.onrender.com/api/v1.0/make/All'
     const response2 = await fetch(url)
     const data2 = await response2.json();
     console.log('data2: ', data2)
@@ -247,7 +247,7 @@ window.onload =async function getData() {
 
     // ------------------------------------------------
     
-    url = 'http://localhost:5000/api/v1.0/severity/All/passenger_inj'
+    url = 'http://traffic-accidents-flask.onrender.com/api/v1.0/severity/All/passenger_inj'
     const response3 = await fetch(url);
     const data3 = await response3.json();
     console.log('data3: ', data3);

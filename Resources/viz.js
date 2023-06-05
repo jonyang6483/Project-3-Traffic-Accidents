@@ -119,7 +119,7 @@ function barChanged(passenger_vehicle) {
 
 // --------------------------------------------------------------
 
-url = 'http://traffic-accidents-flask.onrender.com/api/v1.0/time/All/' + time;
+url = 'https://traffic-accidents-flask.onrender.com/api/v1.0/time/All/' + time;
 // getData();
 window.onload =async function getData() {
     const response = await fetch(url)
@@ -185,7 +185,7 @@ window.onload =async function getData() {
     
     // ------------------------------------------------
     
-    url = 'http://traffic-accidents-flask.onrender.com/api/v1.0/make/All'
+    url = 'https://traffic-accidents-flask.onrender.com/api/v1.0/make/All'
     const response2 = await fetch(url)
     const data2 = await response2.json();
     console.log('data2: ', data2)
@@ -247,7 +247,7 @@ window.onload =async function getData() {
 
     // ------------------------------------------------
     
-    url = 'http://traffic-accidents-flask.onrender.com/api/v1.0/severity/All/passenger_inj'
+    url = 'https://traffic-accidents-flask.onrender.com/api/v1.0/severity/All/passenger_inj'
     const response3 = await fetch(url);
     const data3 = await response3.json();
     console.log('data3: ', data3);
